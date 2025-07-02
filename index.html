@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css/estilo.css">
+    <title>Full Style</title>
+</head>
+<body>
+    <div class="container">
+        <div class="container-header">
+            <header class="flex flex-wrap items-center justify-between gap-4 py-4 max-w-[1600px] mx-auto px-4">
+
+                <!-- Logo -->
+                 <div class="container-logo w-full md:w-auto flex justify-center md:justify-start">
+                    <img src="img/logo.png" alt="Logo" class="logo h-12" />
+                 </div>
+
+                <!-- Buscador -->
+                <div class="container-search">
+                    <div class="input relative">
+                        <input type="text" placeholder="Buscar productos, marcas y modelos" class="w-full px-4 py-2 rounded border" />
+                        <i class="bi bi-search icono-busqueda absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+                    </div>
+                </div>
+
+                <!-- Ubicación -->
+                <div class="container-ubicacion w-full md:w-auto text-sm flex justify-center md:justify-end">
+                    <a href="#" class="flex items-center gap-1">
+                        <i class="bi bi-geo-alt"></i>
+                        <span class="txt-enviar font-medium">Enviar a</span>
+                        <span class="txt-lugar text-gray-600">El Salvador</span>
+                    </a>
+                </div>
+
+                <!-- Menú de navegación alineado a la derecha -->
+                <div class="nav-menu w-full flex flex-wrap justify-center md:justify-end gap-2 mt-2">
+                    <button class="boton-categoria" id="todos">Productos</button>
+                    <button class="boton-categoria" id="camisas">Camisas</button>
+                    <button class="boton-categoria" id="sueters">Suéters</button>
+                    <button class="boton-categoria" id="pantalones">Pantalones</button>
+                    <button class="boton-categoria" id="ropa-nino">Niños</button>
+                    <button class="boton-categoria" id="-ropa-mujer">Mujeres</button>
+                    <button class="boton-categoria" id="ropa-hombre">Hombres</button>
+                    <button class="boton-categoria" id="ropa-nina">Niñas</button>
+                </div>
+
+                <!-- Info del usuario -->
+                <div class="info-user flex flex-wrap items-center justify-end gap-4 w-full md:w-auto md:ml-auto">
+                    <a href="login.html">Creá tu cuenta</a>
+                    <a href="login.html">Ingresá</a>
+                    <a href="#">Mis Compras</a>
+                    <a href="carrito.html" class="relative">
+                        <i class="bi bi-cart icono-carrito"></i>
+                        <span class="num-en-carrito absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1 rounded-full" id="num-en-carrito">0</span>
+                    </a>
+
+                <!-- Usuario con dropdown -->
+                <div class="user-dropdown">
+                    <button class="user-btn flex items-center gap-1">
+                        <i class="bi bi-person-circle"></i>
+                        <span id="nombre-usuario">Usuario</span>
+                        <i class="bi bi-caret-down-fill"></i>
+                    </button>
+                    <div class="user-menu" id="user-menu">
+                <!-- JS lo llena -->
+                    </div>
+                </div>
+            </header>
+
+
+        </div>
+        <!-- main - contenedor de productos -->
+        <main id="main" style="max-width: 1600px; margin: 0 auto;">
+            <h2 class="titulo-seccion" id="titulo-seccion">Todos los productos</h2>
+            <!-- Dentro de tu <main> o donde quieras mostrar los productos -->
+            <div id="contenedor-productos" class="contenedor-productos"></div>
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const count = localStorage.getItem("contadorCarrito") || 0;
+    document.getElementById("contador-carrito").innerText = count;
+
+// Esperar a que se carguen los productos en el DOM
+  setTimeout(() => {
+    document.querySelectorAll('.producto').forEach(card => {
+      card.addEventListener('click', function (e) {
+        // Evitar que dispare si el click fue en un botón (como "Agregar al carrito")
+        if (e.target.tagName === 'BUTTON' || e.target.closest('button')) return;
+
+        const id = this.dataset.id;
+        const producto = productos.find(p => p.id === id);
+        if (producto) {
+          localStorage.setItem("producto_seleccionado", JSON.stringify(producto));
+          window.location.href = "ordenar-producto.html";
+        } else {
+          console.error("Producto no encontrado con ID:", id);
+        }
+      });
+    });
+  }, 300);
+});
+</script>
+
+  <!-- Modal del producto -->
+<div id="modal-producto" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background-color:rgba(0,0,0,0.6); z-index:999;">
+  <div style="background:#fff; max-width:500px; margin:80px auto; padding:20px; border-radius:10px; position:relative;">
+    <span id="cerrar-modal" style="position:absolute; top:10px; right:20px; font-size:24px; cursor:pointer;">&times;</span>
+    <h2 id="modal-nombre"></h2>
+    <img id="modal-imagen" src="" style="max-width:100%; height:auto;" />
+    <p id="modal-descripcion"></p>
+    <p><strong>Proveedor:</strong> <span id="modal-proveedor"></span></p>
+    <p><strong>Precio:</strong> <span id="modal-precio"></span></p>
+    <label for="modal-talla">Talla:</label>
+    <select id="modal-talla">
+      <option value="">Selecciona talla</option>
+      <option>XS</option>
+      <option>S</option>
+      <option>M</option>
+      <option>L</option>
+      <option>XL</option>
+    </select>
+    <br><br>
+    <button id="modal-agregar">Agregar al carrito</button>
+  </div>
+</div>
+
+
+
+    <footer style="background: #111; color: #fff; padding: 18px 0 12px 0; width: 100%; margin-top: 40px;">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; align-items: flex-end;">
+            <div style="display: flex; gap: 32px; margin-bottom: 10px;">
+                <a href="terminos-y-condiciones.html" style="color: #fff; text-decoration: underline;">Términos del servicio</a>
+                <a href="politica-privacidad.html" style="color: #fff; text-decoration: underline;">Política de privacidad</a>
+            </div>
+            <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 10px;">
+                <a href="https://facebook.com/" target="_blank" title="Facebook" style="color:#fff;font-size:1.5em;">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/fullurbanstyle_/" target="_blank" title="Instagram" style="color:#fff;font-size:1.5em;">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://wa.me/50372253967" target="_blank" title="WhatsApp" style="color:#fff;font-size:1.5em;">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+                <span style="color:#fff;font-size:1em;">
+                    <i class="bi bi-telephone"></i> +503 7225-3967
+                </span>
+                <span style="color:#fff;font-size:1em;">
+                    <i class="bi bi-envelope"></i> CodeRed@gmail.com
+                </span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

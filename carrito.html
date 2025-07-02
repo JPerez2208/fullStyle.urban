@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Style - Carrito</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css/estilo.css">
+</head>
+<body>
+
+
+    <div class="container">
+        <div class="container-header">
+            <header class="header">
+                <div class="container-logo">
+                    <img src="img/logo.png" alt="" class="logo">
+                </div>
+                <div class="container-search">
+                    <div class="input">
+                        <input type="text" placeholder="Buscar productos, marcasa y modelos">
+                        <i class="bi bi-search icono-busqueda"></i>
+                    </div>
+                </div>
+                <div class="container-ubicacion">
+                    <a href="#">
+                        <i class="bi bi-geo-alt"></i>
+                        <span class="txt-enviar">Enviar a</span>
+                        <span class="txt-lugar">El Salvador</span>
+                    </a>
+                </div>
+
+               
+
+
+                <div class="nav-menu">
+                    <button class="boton-categoria" id="todos">Todos los productos</button>
+                    <button class="boton-categoria" id="camisas">Camisas</button>
+                    <button class="boton-categoria" id="sueters">Suéters</button>
+                    <button class="boton-categoria" id="pantalones">Pantalones</button>
+                    <button class="boton-categoria" id="ropa-nino">Ropa de Niño</button>
+                    <button class="boton-categoria" id="ropa-mujer">Ropa de Mujer</button>
+                    <button class="boton-categoria" id="ropa-hombre">Ropa de Hombre</button>
+                    <button class="boton-categoria" id="ropa-nina">Ropa de Niña</button>
+                </div>
+                <div class="info-user" style="margin-left:auto; display:flex; align-items:end; justify-content:end;">
+                    <a href="login.html">Creá tu cuenta</a>
+                    <a href="login.html">Ingresá</a>
+                    <a href="#">Mis Compras</a>
+                    <a href="carrito.html">
+                        <i class="bi bi-cart icono-carrito"></i>
+                        <span class="num-en-carrito" id="num-en-carrito">0</span>
+                    </a>
+                    <!-- Botón de usuario con menú desplegable -->
+                    <div class="user-dropdown">
+                        <button class="user-btn">
+                            <i class="bi bi-person-circle"></i> <span id="nombre-usuario">Usuario</span> <i class="bi bi-caret-down-fill"></i>
+                        </button>
+                        <div class="user-menu" id="user-menu">
+                            <!-- El contenido se llena dinámicamente con JS -->
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+      
+
+
+
+        <!-- MAIN -->
+        <main>
+            <div class="contenedor-carrito">
+                <p class="carrito-vacio" id="carrito-vacio">
+                    <i class="bi bi-cart-fill"></i> Carrito Vacío!! - Empieza un carrito de compras
+                </p>
+
+                <div class="carrito-productos disabled" id="carrito-productos"></div>
+
+                <div class="carrito-resumen-compra disabled" id="carrito-resumen">
+                    <div class="carrito-resumen-compra-titulo">
+                        <span>Resumen de Compra</span>
+                    </div>
+                    <div class="carrito-resumen-total-compra item-resumen">
+                        <span class="cantidad-productos-compra">Productos(<span class="num-total">0</span>)</span>
+                        <span class="precio-productos-compra">$0</span>
+                    </div>
+                    <div class="carrito-resumen-total-envio item-resumen">
+                        <span>Envios</span>
+                        <span class="carrito-resumen-precio-envio">$0</span>
+                    </div>
+                    <div class="carrito-resumen-total-final item-resumen">
+                        <span>Total</span>
+                        <span class="precio-final" id="precio-final">$0</span>
+                    </div>
+
+                    <!-- Formulario de pago -->
+                    <form class="item-resumen" id="form-pago" style="flex-direction:column;gap:8px;">
+                        <label for="metodo-pago">Método de pago</label>
+                        <select id="metodo-pago" required>
+                            <option value="">Seleccione...</option>
+                            <option value="efectivo">Efectivo</option>
+                            <option value="tarjeta">Tarjeta</option>
+                            <option value="transferencia">Transferencia</option>
+                            <option value="paypal">Paypal</option>
+                        </select>
+                    </form>
+
+                    <div class="item-resumen">
+                        <button class="carrito-acciones-comprar" id="btn-pagar">Continuar Compra</button>
+                    </div>
+
+                    <!-- Formulario de envío -->
+                    <form id="form-envio" class="item-resumen" style="display:none;flex-direction:column;gap:8px;">
+                        <label for="pais">País</label>
+                        <input type="text" id="pais" required>
+                        <label for="departamento">Departamento</label>
+                        <input type="text" id="departamento" required>
+                        <label for="distrito">Distrito</label>
+                        <input type="text" id="distrito" required>
+                        <label for="municipio">Municipio</label>
+                        <input type="text" id="municipio" required>
+                        <label for="direccion">Dirección</label>
+                        <input type="text" id="direccion" required>
+                        <label for="dia-entrega">Elegir día de entrega</label>
+                        <input type="date" id="dia-entrega" required>
+                        <button type="submit" style="background:#00a650;">Finalizar Pedido</button>
+                    </form>
+                </div>
+
+                <p id="carrito-compra-finzalizada" class="disabled">¡Gracias por tu compra!</p>
+
+                <div style="text-align:center; margin-top:20px;">
+                    <a href="index.html" class="btn-regresar-tienda" style="background:#3483fa;color:#fff;padding:10px 24px;border-radius:5px;text-decoration:none;">
+                        ← Regresar a la tienda
+                    </a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script funcional del carrito -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carrito = JSON.parse(localStorage.getItem("productos-en-carrito")) || [];
+        const contenedorProductos = document.getElementById('carrito-productos');
+        const resumen = document.getElementById('carrito-resumen');
+        const vacio = document.getElementById('carrito-vacio');
+        const totalProductos = document.querySelector('.num-total');
+        const totalPrecio = document.querySelector('.precio-productos-compra');
+        const totalFinal = document.getElementById('precio-final');
+
+        function renderCarrito() {
+        contenedorProductos.innerHTML = "";
+        let productos = JSON.parse(localStorage.getItem("productos-en-carrito")) || [];
+
+        if (productos.length === 0) {
+            vacio.classList.remove('disabled');
+            contenedorProductos.classList.add('disabled');
+            resumen.classList.add('disabled');
+            return;
+        }
+        
+
+            vacio.classList.add('disabled');
+            contenedorProductos.classList.remove('disabled');
+            resumen.classList.remove('disabled');
+
+            let cantidadTotal = 0;
+            let precioTotal = 0;
+
+            productos.forEach((prod, index) => {
+            const item = document.createElement('div');
+            item.style.marginBottom = "20px";
+            item.innerHTML = `
+                <div style="display:flex;gap:12px;align-items:center;">
+                    <img src="${prod.imagen?.[0] || ''}" alt="${prod.titulo}" style="width:80px;height:80px;object-fit:cover;">
+                    <div style="flex:1;">
+                        <h4 style="margin:0;">${prod.titulo}</h4>
+                        <p style="margin:0;">Talla: ${prod.talla}</p>
+                        <p style="margin:0;">Cantidad: ${prod.cantidad}</p>
+                        <p style="margin:0;">Subtotal: $${prod.precio * prod.cantidad}</p>
+                    </div>
+                    <button class="btn-eliminar-producto" data-index="${index}" style="background:#e53935;color:#fff;border:none;padding:6px 10px;border-radius:4px;cursor:pointer;">
+                        Eliminar
+                    </button>
+                </div>
+                <hr>
+            `;
+            contenedorProductos.appendChild(item);
+
+            cantidadTotal += prod.cantidad;
+            precioTotal += prod.precio * prod.cantidad;
+        });
+
+        totalProductos.textContent = cantidadTotal;
+        totalPrecio.textContent = `$${precioTotal}`;
+        document.querySelector('.carrito-resumen-precio-envio').textContent = "$0";
+        totalFinal.textContent = `$${precioTotal}`;
+
+        // Asignar eventos a botones de eliminar
+        const botonesEliminar = document.querySelectorAll('.btn-eliminar-producto');
+        botonesEliminar.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                productos.splice(index, 1);
+                localStorage.setItem("productos-en-carrito", JSON.stringify(productos));
+                renderCarrito(); // volver a renderizar
+            });
+        });
+    }
+
+    renderCarrito();
+
+    // Comprar
+    const btnPagar = document.getElementById('btn-pagar');
+    const formPago = document.getElementById('form-pago');
+    const formEnvio = document.getElementById('form-envio');
+
+    btnPagar.addEventListener('click', function(e) {
+        e.preventDefault();
+        const metodo = document.getElementById('metodo-pago').value;
+        if (!metodo) {
+            alert('Seleccione un método de pago');
+            return;
+        }
+        btnPagar.style.display = 'none';
+        formPago.style.display = 'none';
+        formEnvio.style.display = 'flex';
+    });
+
+    formEnvio.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert('¡Pedido realizado con éxito!');
+        localStorage.removeItem("productos-en-carrito");
+        location.reload();
+    });
+});
+</script>
+    
+</body>
+</html>

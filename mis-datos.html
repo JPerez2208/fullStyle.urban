@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="./css/estilo.css">
+    <title>Mi Cuenta</title>
+    <style>
+        .info-box {
+            background: #fff;
+            max-width: 400px;
+            margin: 60px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 32px 24px;
+        }
+        .info-box h2 {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+        .dato {
+            margin-bottom: 12px;
+        }
+        .dato span {
+            font-weight: bold;
+            color: #3483fa;
+        }
+        .btn-volver {
+            display: block;
+            margin: 30px auto 0 auto;
+            background: #3483fa;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 24px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-header">
+        <header class="header">
+            <div class="container-logo">
+                <img src="img/logo.png" alt="" class="logo">
+            </div>
+            <div class="container-search">
+                <div class="input">
+                    <input type="text" placeholder="Buscar productos, marcasa y modelos">
+                    <i class="bi bi-search icono-busqueda"></i>
+                </div>
+            </div>
+            <div class="container-ubicacion">
+                <a href="#">
+                    <i class="bi bi-geo-alt"></i>
+                    <span class="txt-enviar">Enviar a</span>
+                    <span class="txt-lugar">El Salvador</span>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <button class="boton-categoria" id="todos">Todos los productos</button>
+                <button class="boton-categoria" id="camisas">Camisas</button>
+                <button class="boton-categoria" id="sueters">Suéters</button>
+                <button class="boton-categoria" id="pantalones">Pantalones</button>
+                <button class="boton-categoria" id="ropa-nino">Ropa de Niño</button>
+                <button class="boton-categoria" id="ropa-mujer">Ropa de Mujer</button>
+                <button class="boton-categoria" id="ropa-hombre">Ropa de Hombre</button>
+                <button class="boton-categoria" id="ropa-nina">Ropa de Niña</button>
+            </div>
+            <div class="info-user" id="info-user-header"></div>
+        </header>
+    </div>
+    <div class="info-box" id="info-box">
+        <!-- Aquí se cargará la info del usuario -->
+    </div>
+    <a href="index.html" class="btn-volver"><i class="bi bi-arrow-left"></i> Volver a la tienda</a>
+    <script>
+    // Mostrar info del usuario desde localStorage
+    document.addEventListener('DOMContentLoaded', function() {
+        const usuarioSesion = JSON.parse(localStorage.getItem('usuario_registrado'));
+        const box = document.getElementById('info-box');
+        if (usuarioSesion) {
+            box.innerHTML = `
+                <h2>Información de Cuenta</h2>
+                <div class="dato"><span>Usuario:</span> ${usuarioSesion.usuario || ''}</div>
+                <div class="dato"><span>Correo:</span> ${usuarioSesion.correo || ''}</div>
+                <div class="dato"><span>Fecha de nacimiento:</span> ${usuarioSesion.fecha || ''}</div>
+                <div class="dato"><span>Permisos:</span> ${usuarioSesion.permisos || 'usuario'}</div>
+            `;
+        } else {
+            box.innerHTML = `<h2>No has iniciado sesión</h2>`;
+        }
+    });
+    </script>
+    <script src="./js/main.js"></script>
+        <footer style="background: #111; color: #fff; padding: 18px 0 12px 0; width: 100%; margin-top: 40px;">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; align-items: flex-end;">
+            <div style="display: flex; gap: 32px; margin-bottom: 10px;">
+                <a href="terminos-y-condiciones.html" style="color: #fff; text-decoration: underline;">Términos del servicio</a>
+                <a href="politica-privacidad.html" style="color: #fff; text-decoration: underline;">Política de privacidad</a>
+            </div>
+            <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 10px;">
+                <a href="https://facebook.com/" target="_blank" title="Facebook" style="color:#fff;font-size:1.5em;">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/fullurbanstyle_/" target="_blank" title="Instagram" style="color:#fff;font-size:1.5em;">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://wa.me/50372253967" target="_blank" title="WhatsApp" style="color:#fff;font-size:1.5em;">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+                <span style="color:#fff;font-size:1em;">
+                    <i class="bi bi-telephone"></i> +503 7225-3967
+                </span>
+                <span style="color:#fff;font-size:1em;">
+                    <i class="bi bi-envelope"></i> CodeRed@gmail.com
+                </span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

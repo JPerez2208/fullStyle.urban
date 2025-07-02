@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        .admin-form-container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 32px 24px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .admin-form-container h2 {
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .admin-form-container label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+        .admin-form-container input, .admin-form-container select, .admin-form-container textarea {
+            width: 100%;
+            padding: 8px 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .admin-form-container button[type="submit"] {
+            width: 100%;
+            background: #3483fa;
+            color: #fff;
+            border: none;
+            padding: 10px 0;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        .admin-form-container .drop-area {
+            border: 2px dashed #3483fa;
+            border-radius: 6px;
+            padding: 20px;
+            text-align: center;
+            color: #3483fa;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+        .admin-form-container .drop-area img {
+            max-width: 80px;
+            margin: 8px;
+            border-radius: 4px;
+        }
+        .admin-productos-list {
+            margin-top: 32px;
+        }
+        .admin-producto-item {
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .admin-producto-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .admin-producto-item .acciones button {
+            margin-left: 8px;
+            background: #3483fa;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 4px 10px;
+            cursor: pointer;
+        }
+        .admin-producto-item .acciones button.eliminar {
+            background: #e53935;
+        }
+        .container-header {
+            background: #f8f9fa;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        .container-logo .logo {
+            max-height: 50px;
+        }
+        .container-search {
+            flex-grow: 1;
+            margin: 0 15px;
+        }
+        .input {
+            position: relative;
+        }
+        .input input {
+            width: 100%;
+            padding: 10px 40px 10px 15px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .bi-search {
+            position: absolute;
+            top: 50%;
+            left: 10px;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #868e96;
+        }
+        .container-ubicacion {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        .container-ubicacion i {
+            font-size: 20px;
+            color: #3483fa;
+            margin-right: 8px;
+        }
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .boton-categoria {
+            background: #3483fa;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .info-user {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .info-user a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 14px;
+        }
+        .icono-carrito {
+            font-size: 18px;
+            color: #3483fa;
+            position: relative;
+        }
+        .num-en-carrito {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: #e53935;
+            color: #fff;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+        /* Estilos para el menú de administración avanzado */
+        .admin-menu {
+            max-width: 600px;
+            margin: 30px auto 0 auto;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .admin-menu button {
+            background: #3483fa;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .admin-menu-panel {
+            max-width: 600px;
+            margin: 40px auto 0 auto;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 32px 24px;
+            display: none;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .admin-menu-panel.active {
+            display: flex;
+        }
+        .admin-menu-panel button {
+            padding: 12px 0;
+            border: none;
+            border-radius: 6px;
+            background: #3483fa;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 6px;
+            transition: background 0.2s;
+        }
+        .admin-menu-panel button:hover {
+            background: #2968c8;
+        }
+        .admin-menu-toggle {
+            display: block;
+            margin: 40px auto 0 auto;
+            padding: 12px 32px;
+            background: #00a650;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .admin-menu-toggle:hover {
+            background: #007d3a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-header">
+        <header class="header">
+            <div class="container-logo">
+                <img src="img/logo.png" alt="" class="logo">
+            </div>
+            <div class="container-search">
+                <div class="input">
+                    <input type="text" placeholder="Buscar productos, marcasa y modelos" disabled>
+                    <i class="bi bi-search icono-busqueda"></i>
+                </div>
+            </div>
+            <div class="container-ubicacion">
+                <a href="#">
+                    <i class="bi bi-geo-alt"></i>
+                    <span class="txt-enviar">Enviar a</span>
+                    <span class="txt-lugar">El Salvador</span>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <button class="boton-categoria" id="todos" onclick="window.location.href='index.html'">Todos los productos</button>
+                <button class="boton-categoria" id="camisas" onclick="window.location.href='index.html#camisas'">Camisas</button>
+                <button class="boton-categoria" id="sueters" onclick="window.location.href='index.html#sueters'">Suéters</button>
+                <button class="boton-categoria" id="pantalones" onclick="window.location.href='index.html#pantalones'">Pantalones</button>
+                <button class="boton-categoria" id="ropa-nino" onclick="window.location.href='index.html#ropa-nino'">Ropa de Niño</button>
+                <button class="boton-categoria" id="ropa-mujer" onclick="window.location.href='index.html#ropa-mujer'">Ropa de Mujer</button>
+                <button class="boton-categoria" id="ropa-hombre" onclick="window.location.href='index.html#ropa-hombre'">Ropa de Hombre</button>
+                <button class="boton-categoria" id="ropa-nina" onclick="window.location.href='index.html#ropa-nina'">Ropa de Niña</button>
+            </div>
+            <div class="info-user" id="info-user-header"></div>
+        </header>
+    </div>
+
+    <button class="admin-menu-toggle" id="btn-abrir-admin-menu">Abrir menú de administración</button>
+
+    <div class="admin-menu-panel" id="admin-menu-panel">
+        <button onclick="window.location.reload()">Actualizar Panel</button>
+        <button onclick="editarColores()">Editar Colores</button>
+        <button onclick="activarQuitarProductos()">Quitar Productos en Web</button>
+        <button onclick="window.location.href='index.html'">Ir a la tienda</button>
+        <button onclick="window.location.href='login.html'">Cerrar sesión</button>
+    </div>
+
+    <script>
+        // Mostrar/ocultar menú admin
+        document.getElementById('btn-abrir-admin-menu').onclick = function() {
+            document.getElementById('admin-menu-panel').classList.toggle('active');
+        };
+
+        function editarColores() {
+            let color = prompt("Escribe el color principal en formato HEX o nombre (ej: #3483fa o red):", "#3483fa");
+            if(color) {
+                document.documentElement.style.setProperty('--clr-blue', color);
+                alert("Color cambiado. Recarga la página para ver cambios globales.");
+            }
+        }
+        function activarQuitarProductos() {
+            localStorage.setItem('modo_admin_quitar', '1');
+            alert("Modo quitar productos activado. Ve a la tienda y haz clic en un producto para eliminarlo.");
+        }
+
+        // Header dinámico usuario/admin
+        document.addEventListener('DOMContentLoaded', function() {
+            const infoUser = document.getElementById('info-user-header');
+            const usuario = JSON.parse(localStorage.getItem('usuario_registrado'));
+
+            if (infoUser) {
+                if (usuario && usuario.usuario) {
+                    infoUser.innerHTML = `
+                        <div class="user-dropdown">
+                            <button class="user-btn">
+                                <i class="bi bi-person-circle"></i> ${usuario.usuario} <i class="bi bi-caret-down-fill"></i>
+                            </button>
+                            <div class="user-menu">
+                                <a href="mis-datos.html"><i class="bi bi-person-lines-fill"></i> Mi cuenta</a>
+                                ${usuario.usuario === "admin" ? `<a href="admin.html"><i class="bi bi-shield-lock"></i> Panel Admin</a>` : ""}
+                                <a href="#" id="cerrar-sesion"><i class="bi bi-box-arrow-right"></i> Cerrar sesión</a>
+                            </div>
+                        </div>
+                        <a href="#">Mis Compras</a>
+                        <a href="carrito.html">
+                            <i class="bi bi-cart icono-carrito"></i>
+                            <span class="num-en-carrito" id="num-en-carrito">0</span>
+                        </a>
+                    `;
+                    document.getElementById('cerrar-sesion').onclick = function(e) {
+                        e.preventDefault();
+                        localStorage.removeItem('usuario_registrado');
+                        window.location.reload();
+                    };
+
+                    // Dropdown toggle
+                    const userBtn = infoUser.querySelector('.user-btn');
+                    const userMenu = infoUser.querySelector('.user-menu');
+                    userBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        userMenu.classList.toggle('show');
+                    });
+                    document.addEventListener('click', function() {
+                        userMenu.classList.remove('show');
+                    });
+                } else {
+                    infoUser.innerHTML = `
+                        <a href="login.html">Creá tu cuenta</a>
+                        <a href="login.html">Ingresá</a>
+                        <a href="#">Mis Compras</a>
+                        <a href="carrito.html">
+                            <i class="bi bi-cart icono-carrito"></i>
+                            <span class="num-en-carrito" id="num-en-carrito">0</span>
+                        </a>
+                    `;
+                }
+            }
+        });
+    </script>
+    <div class="admin-form-container">
+        <h2>Panel de Administración</h2>
+        <form id="admin-form">
+            <input type="hidden" id="edit-index">
+            <label>Imágenes del producto (arrastre o seleccione hasta 3):</label>
+            <div class="drop-area" id="drop-area">
+                Arrastra imágenes aquí o haz clic para seleccionar
+                <input type="file" id="admin-imgs" accept="image/*" multiple style="display:none;">
+                <div id="preview-imgs"></div>
+            </div>
+            <label>Nombre:</label>
+            <input type="text" id="admin-nombre" required>
+            <label>Descripción:</label>
+            <textarea id="admin-desc" required></textarea>
+            <label>Precio:</label>
+            <input type="number" id="admin-precio" required>
+            <label>Rebaja (%):</label>
+            <input type="number" id="admin-descuento" value="0" min="0" max="99">
+            <label>Categoría:</label>
+            <select id="admin-categoria" required>
+                <option value="camisas">Camisas</option>
+                <option value="sueters">Suéters</option>
+                <option value="pantalones">Pantalones</option>
+                <option value="ropa-nino">Ropa de Niño</option>
+                <option value="ropa-mujer">Ropa de Mujer</option>
+                <option value="ropa-hombre">Ropa de Hombre</option>
+                <option value="ropa-nina">Ropa de Niña</option>
+            </select>
+            <label>Proveedor:</label>
+            <input type="text" id="admin-proveedor" value="ADMIN">
+            <label>Stock:</label>
+            <input type="number" id="admin-stock" value="10" min="1">
+            <button type="submit">Guardar producto</button>
+        </form>
+        <hr>
+        <h3>Productos Agregados</h3>
+        <div class="admin-productos-list" id="admin-productos-list"></div>
+        <a href="index.html" style="display:block;text-align:center;margin-top:20px;">← Volver a la tienda</a>
+    </div>
+    <script>
+    // Drag & drop imágenes
+    const dropArea = document.getElementById('drop-area');
+    const inputImgs = document.getElementById('admin-imgs');
+    const previewImgs = document.getElementById('preview-imgs');
+    let imagenesBase64 = [];
+
+    dropArea.addEventListener('click', () => inputImgs.click());
+    dropArea.addEventListener('dragover', e => {
+        e.preventDefault();
+        dropArea.style.background = "#e3f0ff";
+    });
+    dropArea.addEventListener('dragleave', e => {
+        e.preventDefault();
+        dropArea.style.background = "";
+    });
+    dropArea.addEventListener('drop', e => {
+        e.preventDefault();
+        dropArea.style.background = "";
+        handleFiles(e.dataTransfer.files);
+    });
+    inputImgs.addEventListener('change', e => {
+        handleFiles(e.target.files);
+    });
+
+    function handleFiles(files) {
+        imagenesBase64 = [];
+        previewImgs.innerHTML = "";
+        Array.from(files).slice(0,3).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                imagenesBase64.push(evt.target.result);
+                const img = document.createElement('img');
+                img.src = evt.target.result;
+                previewImgs.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Guardar/agregar producto
+    document.getElementById('admin-form').onsubmit = function(e){
+        e.preventDefault();
+        let productosAdmin = JSON.parse(localStorage.getItem('productos_admin')) || [];
+        const index = document.getElementById('edit-index').value;
+        const prod = {
+            imagen: imagenesBase64,
+            titulo: document.getElementById('admin-nombre').value,
+            descripcion: document.getElementById('admin-desc').value,
+            precio: Number(document.getElementById('admin-precio').value),
+            descuento: Number(document.getElementById('admin-descuento').value),
+            categoria: document.getElementById('admin-categoria').value,
+            proveedor: document.getElementById('admin-proveedor').value,
+            stock: Number(document.getElementById('admin-stock').value)
+        };
+        if(index !== "") {
+            productosAdmin[index] = prod;
+        } else {
+            productosAdmin.push(prod);
+        }
+        localStorage.setItem('productos_admin', JSON.stringify(productosAdmin));
+        this.reset();
+        imagenesBase64 = [];
+        previewImgs.innerHTML = "";
+        document.getElementById('edit-index').value = "";
+        renderAdminProductos();
+    };
+
+    // Mostrar productos en el panel admin
+    function renderAdminProductos() {
+        let productosAdmin = JSON.parse(localStorage.getItem('productos_admin')) || [];
+        const cont = document.getElementById('admin-productos-list');
+        cont.innerHTML = "";
+        productosAdmin.forEach((p, i) => {
+            cont.innerHTML += `
+                <div class="admin-producto-item" data-index="${i}">
+                    ${p.imagen.map(img => `<img src="${img}">`).join('')}
+                    <div>
+                        <b>${p.titulo}</b> - $${p.precio} (${p.descuento}% OFF)<br>
+                        <small>${p.descripcion}</small><br>
+                        <small>Categoría: ${p.categoria}</small>
+                    </div>
+                    <div class="acciones">
+                        <button class="btn-editar">Editar</button>
+                        <button class="eliminar btn-eliminar">Eliminar</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Asigna eventos a los botones de editar
+        cont.querySelectorAll('.btn-editar').forEach((btn, idx) => {
+            btn.onclick = function() {
+                editarAdminProducto(idx);
+            };
+        });
+
+        // Asigna eventos a los botones de eliminar
+        cont.querySelectorAll('.btn-eliminar').forEach((btn, idx) => {
+            btn.onclick = function() {
+                eliminarAdminProducto(idx);
+            };
+        });
+    }
+
+    // Editar producto
+    function editarAdminProducto(i) {
+        let productosAdmin = JSON.parse(localStorage.getItem('productos_admin')) || [];
+        const p = productosAdmin[i];
+        document.getElementById('admin-nombre').value = p.titulo;
+        document.getElementById('admin-desc').value = p.descripcion;
+        document.getElementById('admin-precio').value = p.precio;
+        document.getElementById('admin-descuento').value = p.descuento;
+        document.getElementById('admin-categoria').value = p.categoria;
+        document.getElementById('admin-proveedor').value = p.proveedor;
+        document.getElementById('admin-stock').value = p.stock;
+        document.getElementById('edit-index').value = i;
+        imagenesBase64 = p.imagen;
+        previewImgs.innerHTML = "";
+        p.imagen.forEach(img => {
+            const im = document.createElement('img');
+            im.src = img;
+            previewImgs.appendChild(im);
+        });
+    }
+
+    // Eliminar producto
+    function eliminarAdminProducto(i) {
+        let productosAdmin = JSON.parse(localStorage.getItem('productos_admin')) || [];
+        if(confirm("¿Eliminar este producto?")) {
+            productosAdmin.splice(i,1);
+            localStorage.setItem('productos_admin', JSON.stringify(productosAdmin));
+            renderAdminProductos();
+        }
+    }
+
+    // Mostrar productos al cargar
+    renderAdminProductos();
+    </script>
+        <footer style="background: #111; color: #fff; padding: 18px 0 12px 0; width: 100%; margin-top: 40px;">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; flex-direction: column; align-items: flex-end;">
+            <div style="display: flex; gap: 32px; margin-bottom: 10px;">
+                <a href="terminos-y-condiciones.html" style="color: #fff; text-decoration: underline;">Términos del servicio</a>
+                <a href="politica-privacidad.html" style="color: #fff; text-decoration: underline;">Política de privacidad</a>
+            </div>
+            <div style="display: flex; align-items: center; gap: 24px; margin-bottom: 10px;">
+                <a href="https://facebook.com/" target="_blank" title="Facebook" style="color:#fff;font-size:1.5em;">
+                    <i class="bi bi-facebook"></i>
+                </a>
+                <a href="https://www.instagram.com/fullurbanstyle_/" target="_blank" title="Instagram" style="color:#fff;font-size:1.5em;">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://wa.me/50372253967" target="_blank" title="WhatsApp" style="color:#fff;font-size:1.5em;">
+                    <i class="bi bi-whatsapp"></i>
+                </a>
+                <span style="color:#fff;font-size:1em;">
+                    <i class="bi bi-telephone"></i> +503 7225-3967
+                </span>
+                <span style="color:#fff;font-size:1em;">
+                    <i class="bi bi-envelope"></i> CodeRed@gmail.com
+                </span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

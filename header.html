@@ -1,0 +1,127 @@
+<body>
+    <div id="header-root">
+        <div class="container-header">
+            <header class="header">
+                <div class="container-logo">
+                    <img src="img/logo.png" alt="" class="logo">
+                </div>
+                <div class="container-search">
+                    <div class="input">
+                        <input type="text" placeholder="Buscar productos, marcasa y modelos">
+                        <i class="bi bi-search icono-busqueda"></i>
+                    </div>
+                </div>
+                <div class="container-ubicacion">
+                    <a href="#">
+                        <i class="bi bi-geo-alt"></i>
+                        <span class="txt-enviar">Enviar a</span>
+                        <span class="txt-lugar">El Salvador</span>
+                    </a>
+                </div>
+                <div class="nav-menu">
+                    <button class="boton-categoria" id="todos">Todos los productos</button>
+                    <button class="boton-categoria" id="camisas">Camisas</button>
+                    <button class="boton-categoria" id="sueters">Suéters</button>
+                    <button class="boton-categoria" id="pantalones">Pantalones</button>
+                    <button class="boton-categoria" id="ropa-nino">Ropa de Niño</button>
+                    <button class="boton-categoria" id="ropa-mujer">Ropa de Mujer</button>
+                    <button class="boton-categoria" id="ropa-hombre">Ropa de Hombre</button>
+                    <button class="boton-categoria" id="ropa-nina">Ropa de Niña</button>
+                </div>
+                <div class="info-user" id="info-user-header" style="margin-left:auto; display:flex; align-items:end; justify-content:end;">
+                    <!-- Dentro de tu header, donde va el usuario -->
+                    <div class="user-dropdown">
+                        <button class="user-btn">
+                            <i class="bi bi-person-circle"></i> <span id="nombre-usuario">Usuario</span> <i class="bi bi-caret-down-fill"></i>
+                        </button>
+                        <div class="user-menu" id="user-menu">
+                            <!-- El contenido se llena dinámicamente con JS -->
+                        </div>
+                    </div>
+                </div>
+            </header>
+        </div>
+    </div>
+    <script>
+    // Carga el header visualmente igual en todas las páginas
+    // (Si usas fetch para cargar el header, este bloque debe ir en el archivo principal, no aquí)
+
+    // Mostrar usuario logueado en el header
+    document.addEventListener('DOMContentLoaded', function() {
+        const infoUser = document.getElementById('info-user-header');
+        const usuario = JSON.parse(localStorage.getItem('usuario_registrado'));
+        if (infoUser) {
+            if (usuario && usuario.usuario) {
+                // Si es admin, muestra menú admin
+                if (usuario.usuario === "admin") {
+                    infoUser.innerHTML = `
+                        <span style="margin-right:12px;"><i class="bi bi-person-circle"></i> ${usuario.usuario} (admin)</span>
+                        <a href="admin.html" style="margin-right:12px;background:#3483fa;color:#fff;padding:6px 14px;border-radius:5px;text-decoration:none;">Panel Admin</a>
+                        <a href="#" id="cerrar-sesion">Cerrar sesión</a>
+                        <a href="#">Mis Compras</a>
+                        <a href="carrito.html">
+                            <i class="bi bi-cart icono-carrito"></i>
+                            <span class="num-en-carrito" id="num-en-carrito">0</span>
+                        </a>
+                    `;
+                } else {
+                    // Usuario normal
+                    infoUser.innerHTML = `
+                        <span style="margin-right:12px;"><i class="bi bi-person-circle"></i> ${usuario.usuario}</span>
+                        <a href="#" id="cerrar-sesion">Cerrar sesión</a>
+                        <a href="#">Mis Compras</a>
+                        <a href="carrito.html">
+                            <i class="bi bi-cart icono-carrito"></i>
+                            <span class="num-en-carrito" id="num-en-carrito">0</span>
+                        </a>
+                    `;
+                }
+                document.getElementById('cerrar-sesion').onclick = function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem('usuario_registrado');
+                    window.location.reload();
+                };
+            } else {
+                // No logueado
+                infoUser.innerHTML = `
+                    <a href="login.html">Creá tu cuenta</a>
+                    <a href="login.html">Ingresá</a>
+                    <a href="#">Mis Compras</a>
+                    <a href="carrito.html">
+                        <i class="bi bi-cart icono-carrito"></i>
+                        <span class="num-en-carrito" id="num-en-carrito">0</span>
+                    </a>
+                `;
+            }
+        }
+    });
+
+    // Botones de categorías funcionales
+    document.addEventListener('DOMContentLoaded', function() {
+        const categorias = [
+            { id: "todos", nombre: "Todos los productos" },
+            { id: "camisas", nombre: "Camisas" },
+            { id: "sueters", nombre: "Suéters" },
+            { id: "pantalones", nombre: "Pantalones" },
+            { id: "ropa-nino", nombre: "Ropa de Niño" },
+            { id: "ropa-mujer", nombre: "Ropa de Mujer" },
+            { id: "ropa-hombre", nombre: "Ropa de Hombre" },
+            { id: "ropa-nina", nombre: "Ropa de Niña" }
+        ];
+
+        categorias.forEach(cat => {
+            const btn = document.getElementById(cat.id);
+            if (btn) {
+                btn.onclick = function() {
+                    if (window.mostrarProductosPorCategoria) {
+                        mostrarProductosPorCategoria(cat.id);
+                    } else {
+                        window.location.href = "index.html";
+                    }
+                };
+            }
+        });
+    });
+    </script>
+    <script src="./js/main.js"></script>
+</body>

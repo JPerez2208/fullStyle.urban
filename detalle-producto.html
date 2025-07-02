@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Producto</title>
+    <link rel="stylesheet" href="./css/estilo.css">
+</head>
+<body>
+    <div class="detalle-producto-container" style="max-width:700px;margin:40px auto;background:#fff;padding:32px 24px;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+        <div id="detalle-producto"></div>
+        <a href="index.html" style="display:block;margin-top:30px;text-align:center;">← Volver a la tienda</a>
+    </div>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const prod = JSON.parse(localStorage.getItem("producto_seleccionado"));
+        if (!prod) {
+            document.getElementById('detalle-producto').innerHTML = "<p>Producto no encontrado.</p>";
+            return;
+        }
+        const tallas = prod.tallas || ["S", "M", "L", "XL"];
+        document.getElementById('detalle-producto').innerHTML = `
+            <h2>${prod.titulo}</h2>
+            <img src="${prod.imagen && prod.imagen[0] ? prod.imagen[0] : ''}" alt="${prod.titulo}" style="max-width:220px;display:block;margin-bottom:18px;">
+            <p><b>Precio:</b> $${prod.precio} <span style="color:#388e3c;font-weight:bold;">${prod.descuento}% OFF</span></p>
+            <div style="margin-bottom:10px;">
+                <label for="select-talla"><b>Talla:</b></label>
+                <select id="select-talla" style="margin-left:8px;">
+                    ${tallas.map(t => `<option value="${t}">${t}</option>`).join('')}
+                </select>
+            </div>
+            <p><b>Descripción:</b> ${prod.descripcion || (prod.informacion ? prod.informacion.join("<br>") : "")}</p>
+            <button id="btn-agregar-detalle" style="background:#3483fa;color:#fff;padding:10px 24px;border:none;border-radius:5px;cursor:pointer;margin-top:18px;">Agregar al Carrito</button>
+        `;
+
+        document.getElementById("btn-agregar-detalle").onclick = function() {
+            let productosEnCarrito = JSON.parse(localStorage.getItem("productos-en-carrito")) || [];
+            let talla = document.getElementById('select-talla').value;
+            let index = productosEnCarrito.findIndex(producto =>
+                producto.id === prod.id && producto.talla === talla
+            );
+            if (index !== -1) {
+                productosEnCarrito[index].cantidad++;
+            } else {
+                let nuevoProducto = { ...prod, cantidad: 1, talla: talla };
+                productosEnCarrito.push(nuevoProducto);
+            }
+            localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+            window.location.href = "./carrito.html";
+        };
+    });
+    </script>
+</body>
+</html>
